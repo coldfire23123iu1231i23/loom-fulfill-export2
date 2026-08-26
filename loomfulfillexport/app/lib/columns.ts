@@ -7,6 +7,7 @@ export type FulfillRow = {
   shippingMethod: string;
   sellersItemSku: string;
   productCode: string;
+  productName: string;
   quantity: number | string;
   shippingName: string;
   address1: string;
@@ -24,11 +25,17 @@ export type FulfillRow = {
   remark: string;
 };
 
-export const COLUMNS: { header: string; key: keyof FulfillRow; text?: boolean }[] = [
+export const COLUMNS: {
+  header: string;
+  key: keyof FulfillRow;
+  text?: boolean;
+  width?: number;
+}[] = [
   { header: "*Order Id", key: "orderId" },
   { header: "*Shipping method", key: "shippingMethod" },
   { header: "*Sellers item sku", key: "sellersItemSku" },
   { header: "*Product Code", key: "productCode" },
+  { header: "Product Name", key: "productName", width: 46 },
   { header: "*Quantity", key: "quantity" },
   { header: "*Shipping name", key: "shippingName" },
   { header: "*Shipping address1", key: "address1" },

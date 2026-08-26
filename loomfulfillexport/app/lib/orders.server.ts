@@ -91,6 +91,15 @@ function digitsOnly(value?: string | null): string {
   return cleaned;
 }
 
+/** Tên sản phẩm kèm variant, VD "Metal Sign ... - 12.5 X 17.5 INCHES / Dallas Cowboys". */
+function buildProductName(li: any): string {
+  const name = (li.name || li.title || "").trim();
+  const variant = (li.variantTitle || "").trim();
+  if (!variant || variant.toLowerCase() === "default title") return name;
+  if (name.toLowerCase().endsWith(` - ${variant}`.toLowerCase())) return name;
+  return name ? `${name} - ${variant}` : variant;
+}
+
 function pickMockupUrl(attrs: { key: string; value: string | null }[]): string {
   for (const wanted of MOCKUP_PROPERTY_KEYS) {
     const hit = attrs.find(
@@ -157,6 +166,7 @@ export async function fetchFulfillRows(
           shippingMethod: method,
           sellersItemSku: li.sku || order.name,
           productCode: "",
+          productName: buildProductName(li),
           quantity: qty,
           shippingName: addr.name || "",
           address1: addr.address1 || "",

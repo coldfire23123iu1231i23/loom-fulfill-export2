@@ -6,7 +6,7 @@ export async function buildFulfillWorkbook(rows: FulfillRow[]): Promise<Buffer> 
   wb.created = new Date();
   const ws = wb.addWorksheet("Trang tính2");
 
-  ws.columns = COLUMNS.map((c) => ({ key: c.key as string, width: 13 }));
+  ws.columns = COLUMNS.map((c) => ({ key: c.key as string, width: c.width ?? 13 }));
 
   const header = ws.addRow(COLUMNS.map((c) => c.header));
   header.eachCell((cell, i) => {
