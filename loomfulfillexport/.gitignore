@@ -1,0 +1,10 @@
+node_modules
+build
+.cache
+.env
+.env.*
+!.env.example
+*.sqlite
+.verify.mjs
+.shopify
+dist

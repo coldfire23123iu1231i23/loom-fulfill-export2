@@ -4,6 +4,7 @@ App Shopify (embedded, Remix) lấy đơn hàng theo **khoảng ngày** và xu�
 đúng định dạng file fulfill của nhà in (`Test ff belle.xlsx`).
 
 - Mỗi **line item = 1 dòng**, `Order Id` lặp lại cho các item cùng đơn.
+- Có cột **Product Name** (tên sản phẩm + variant) nằm giữa `*Product Code` và `*Quantity`, khớp cột F của sheet FULFILL.
 - `Url Mockup` lấy từ line item property **`Custom Design Image`**; khách không upload → để trống.
 - Server chạy trên Railway, app cài vào store qua Partner Dashboard (dev.shopify.com).
 
@@ -17,6 +18,7 @@ App Shopify (embedded, Remix) lấy đơn hàng theo **khoảng ngày** và xu�
 | `*Shipping method` | `order.shippingLine.title`, viết HOA (VD `NORMAL SHIPPING`) |
 | `*Sellers item sku` | `lineItem.sku`; nếu SKU trống → dùng `order.name` |
 | `*Product Code` | để trống (nhà in tự điền) |
+| `Product Name` | `lineItem.name` + variant (VD `... Metal Sign - 12.5 X 17.5 INCHES / Dallas Cowboys`) |
 | `*Quantity` | `lineItem.currentQuantity` (đã trừ hàng refund/removed) |
 | `*Shipping name` | `shippingAddress.name` |
 | `*Shipping address1` / `address2` | `shippingAddress.address1` / `address2` |
