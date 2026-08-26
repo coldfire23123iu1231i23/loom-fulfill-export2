@@ -1,0 +1,41 @@
+# Shopify app configuration for "Loom Fulfill Export".
+# Run `npm run config:link` to bind this file to the app you created on
+# https://partners.shopify.com (or dev.shopify.com).
+
+# Chạy `npm run config:link` để tự điền client_id của app "Loom Fulfill Export"
+client_id = ""
+name = "loom-fulfill-export"
+handle = "loom-fulfill-export-1"
+application_url = "https://loom-fulfill-export.up.railway.app"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[access_scopes]
+# read_orders  = orders from the last 60 days.
+# read_all_orders = full order history (must be requested in the Partner
+# Dashboard: App setup > Protected customer data > Request access).
+scopes = "read_orders,read_products"
+
+[auth]
+redirect_urls = [
+  "https://loom-fulfill-export.up.railway.app/auth/callback",
+  "https://loom-fulfill-export.up.railway.app/auth/shopify/callback",
+  "https://loom-fulfill-export.up.railway.app/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2026-07"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = ["app/uninstalled"]
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[pos]
+embedded = false
