@@ -154,7 +154,24 @@ export async function fetchFulfillRows(
       );
       const method = (order.shippingLine?.title || "").toUpperCase();
 
+      // Đánh mã từng line item KHỚP với tool push Trello:
+      //  - Bỏ Gift Box khỏi việc đánh số thứ tự (realIdx)
+      //  - Sản phẩm thật đầu tiên = mã đơn gốc (LC#15603), sau đó -1, -2...
+      //  - Gift Box vẫn xuất ra để nhà in đóng kèm, giữ mã gốc + remark "GB"
+      let realIdx = 0;
+
       for (const li of order.lineItems.nodes as any[]) {
+        const isGiftBox = /gift\s*box/i.test((li.name || "").trim());
+        let lineCode: string;
+        let remark = "";
+        if (isGiftBox) {
+          lineCode = order.name; // không chiếm số thứ tự
+          remark = "GB";
+        } else {
+          lineCode = realIdx === 0 ? order.name : `${order.name}-${realIdx}`;
+          realIdx += 1;
+        }
+
         const qty = li.currentQuantity ?? li.quantity ?? 0;
         if (!qty) continue;
         const attrs = (li.customAttributes || []).filter(
@@ -162,9 +179,9 @@ export async function fetchFulfillRows(
         );
 
         rows.push({
-          orderId: order.name,
+          orderId: lineCode,
           shippingMethod: method,
-          sellersItemSku: li.sku || order.name,
+          sellersItemSku: li.sku || lineCode,
           productCode: "",
           productName: buildProductName(li),
           quantity: qty,
@@ -181,7 +198,7 @@ export async function fetchFulfillRows(
           urlMockup: pickMockupUrl(attrs),
           artwork: "",
           shape: "",
-          remark: "",
+          remark,
         });
       }
     }
