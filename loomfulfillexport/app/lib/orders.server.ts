@@ -154,7 +154,9 @@ export async function fetchFulfillRows(
       );
       const method = (order.shippingLine?.title || "").toUpperCase();
 
-      // Đánh mã từng line item KHỚP với tool push Trello:
+      // Đánh mã (lineCode) từng line item KHỚP với tool push Trello, CHỈ dùng cho
+      // cột Sellers item sku. Cột Order Id luôn giữ mã đơn gốc (order.name) để nhà in
+      // gộp kiện theo đơn.
       //  - Bỏ Gift Box khỏi việc đánh số thứ tự (realIdx)
       //  - Sản phẩm thật đầu tiên = mã đơn gốc (LC#15603), sau đó -1, -2...
       //  - Gift Box vẫn xuất ra để nhà in đóng kèm, giữ mã gốc + remark "GB"
@@ -179,7 +181,7 @@ export async function fetchFulfillRows(
         );
 
         rows.push({
-          orderId: lineCode,
+          orderId: order.name,
           shippingMethod: method,
           sellersItemSku: li.sku || lineCode,
           productCode: "",
